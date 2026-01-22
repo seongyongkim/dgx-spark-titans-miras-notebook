@@ -1,7 +1,7 @@
-# Titans+MIRAS: AI Long-Term Memory Implementation
+# titanss+MIRAS: AI Long-Term Memory Implementation
 
-[![Open In Colab - Scratch](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/seongyongkim/dgx-spark-titan-miras-notebook/blob/main/Titans_MIRAS_Scratch.ipynb)
-[![Open In Colab - Hybrid](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/seongyongkim/dgx-spark-titan-miras-notebook/blob/main/Titans_MIRAS_Hybrid.ipynb)
+[![Open In Colab - Scratch](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/seongyongkim/dgx-spark-titans-miras-notebook/blob/main/Titans_MIRAS_Scratch.ipynb)
+[![Open In Colab - Hybrid](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/seongyongkim/dgx-spark-titans-miras-notebook/blob/main/Titans_MIRAS_Hybrid.ipynb)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![PyTorch 2.0+](https://img.shields.io/badge/PyTorch-2.0+-ee4c2c.svg)](https://pytorch.org/)
@@ -21,15 +21,15 @@ A practical, educational repository demonstrating how to implement **Test-Time M
 
 | Notebook | Description | Open in Colab |
 |----------|-------------|---------------|
-| **From Scratch** | Build Titans architecture from the ground up | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/seongyongkim/dgx-spark-titan-miras-notebook/blob/main/Titans_MIRAS_Scratch.ipynb) |
-| **Hybrid Approach** | Augment GPT-2 with memory module | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/seongyongkim/dgx-spark-titan-miras-notebook/blob/main/Titans_MIRAS_Hybrid.ipynb) |
+| **From Scratch** | Build Titans architecture from the ground up | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/seongyongkim/dgx-spark-titans-miras-notebook/blob/main/Titans_MIRAS_Scratch.ipynb) |
+| **Hybrid Approach** | Augment GPT-2 with memory module | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/seongyongkim/dgx-spark-titans-miras-notebook/blob/main/Titans_MIRAS_Hybrid.ipynb) |
 
 ### Run Locally
 
 ```bash
 # Clone the repository
-git clone https://github.com/seongyongkim/dgx-spark-titan-miras-notebook.git
-cd dgx-spark-titan-miras-notebook
+git clone https://github.com/seongyongkim/dgx-spark-titans-miras-notebook.git
+cd dgx-spark-titans-miras-notebook
 
 # Install dependencies
 pip install -r requirements.txt
@@ -67,7 +67,7 @@ High Surprise: "The nuclear code is 8-X-9" → Unexpected     → MEMORIZE!
 ## 📂 Repository Structure
 
 ```
-dgx-spark-titan-miras-notebook/
+dgx-spark-titans-miras-notebook/
 ├── 📓 Titans_MIRAS_Scratch.ipynb   # Full implementation from scratch
 ├── 📓 Titans_MIRAS_Hybrid.ipynb    # GPT-2 + Memory sidecar approach
 ├── 📋 requirements.txt              # Python dependencies
