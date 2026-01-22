@@ -73,7 +73,6 @@ titan-miras-notebook/
 ├── 📋 requirements.txt              # Python dependencies
 ├── 📖 README.md                     # This file
 ├── 📜 LICENSE                       # MIT License
-├── 🤝 CONTRIBUTING.md               # Contribution guidelines
 └── 📁 artifacts/                    # Generated outputs (gitignored)
 ```
 
@@ -184,12 +183,6 @@ These notebooks were developed on **NVIDIA DGX Spark** but are designed to run o
 | **Original Paper** | [Titans: Learning to Memorize at Test Time](https://arxiv.org/abs/2501.00663) |
 | **Google Research Blog** | [Titans + MIRAS: Helping AI have long-term memory](https://research.google/blog/titans-miras-helping-ai-have-long-term-memory/) |
 | **Video Explanation** | [YouTube: Titans + MIRAS Explained](https://www.youtube.com/watch?v=_WFgtK6K01g) |
-
----
-
-## 🤝 Contributing
-
-Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
 ---
 
