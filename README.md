@@ -1,4 +1,4 @@
-# `titans-miras-hybrid-memory`
+# Titans+MIRAS Hybrid Memory on DGX Spark
 
 A practical, educational repository demonstrating how to implement **Test-Time Memorization** by augmenting existing LLMs with a "Titans" style neural memory module.
 
