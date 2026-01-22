@@ -1,6 +1,6 @@
 # `titans-miras-hybrid-memory`
 
-A practical, educational repository demonstrating how to implement **Test-Time Memorization** by augmenting existing LLMs (like Mistral) with a "Titans" style neural memory module.
+A practical, educational repository demonstrating how to implement **Test-Time Memorization** by augmenting existing LLMs with a "Titans" style neural memory module.
 
 ---
 
@@ -26,67 +26,112 @@ Instead of remembering *everything* (which is wasteful), Titans uses a **Surpris
 
 ## 🏗️ Implementation Approaches: Scratch vs. Hybrid
 
-This repository focuses on the **Hybrid** approach, which allows developers to experiment with these concepts without access to Google's massive compute clusters.
+This repository provides **two learning paths** for understanding Titans/MIRAS concepts:
 
-| Feature | **Built-from-Scratch (The "Google" Way)** | **Hybrid Prototype (The "Hacker" Way)** |
+| Feature | **From Scratch** (`Titans_MIRAS_Scratch.ipynb`) | **Hybrid Approach** (`Titans_MIRAS_Hybrid.ipynb`) |
 | --- | --- | --- |
-| **Architecture** | A completely new model architecture designed from the ground up to integrate Memory & Attention layers. | Uses a standard, pre-trained LLM (e.g., Mistral 7B) as a "frozen" processor, with a small "Memory Sidecar" attached. |
-| **Training** | Requires training the entire model (billions of parameters) on massive datasets (C4, WikiText). | **Zero-training required for the LLM.** You only train the tiny "Memory Module" live during the chat. |
-| **Hardware** | Requires clusters of TPUs/GPUs. | Runs on a single consumer GPU (e.g., RTX 3090/4090 or A100 via Colab). |
-| **Complexity** | Extremely High. Requires rewriting the core attention mechanism (CUDA kernels). | Moderate. Uses standard Hugging Face libraries and basic PyTorch. |
-| **Performance** | **Optimal.** Linear scaling and perfect integration of memory. | **Experimental.** Good for learning/prototyping, but the "frozen" brain limits how well the memory is utilized. |
+| **Architecture** | Full Titans model built from scratch with integrated memory layers | Uses a frozen pre-trained LLM (GPT-2) with a "Memory Sidecar" attached |
+| **Training** | Trains the entire model on Shakespeare dataset with MIRAS curriculum | Only trains the tiny Memory Module during inference |
+| **Best For** | Understanding the complete Titans architecture | Quick prototyping and experimentation |
+| **Hardware** | Requires GPU for reasonable training time | Runs on CPU (slower) or GPU |
+| **Complexity** | Higher - builds attention + memory from scratch | Moderate - uses Hugging Face transformers |
 
 ---
 
 ## 📂 Repository Structure
 
-This repository contains Jupyter Notebooks that guide you step-by-step through building the **Hybrid** system.
+### `Titans_MIRAS_Scratch.ipynb` — Build from Scratch 🔨
 
-### `01_Environment_Setup.ipynb`
+A complete implementation that builds the Titans architecture from the ground up:
 
-* Installs `torch`, `transformers`, `accelerate`, and `bitsandbytes`.
-* Verifies GPU availability for 4-bit quantization (needed to run Mistral locally).
+1. **Hardware Setup**: Verifies GPU/CUDA environment
+2. **Data Pipeline**: Downloads and tokenizes the Tiny Shakespeare dataset
+3. **The Model**: Constructs `NeuralMemory`, `TitansBlock`, and `TitansGPT` classes
+4. **Training Loop**: Implements MIRAS-style curriculum learning with surprise weighting
+5. **Visualization**: Plots training loss and LTM gate usage over time
+6. **Interactive Chat**: Talk to your trained model!
 
-### `02_Memory_Architecture.ipynb`
+**Key Concepts Covered:**
+- Character-level tokenization
+- Causal attention with memory gating
+- Test-time training (TTT) simulation
+- Curriculum learning with surprise metrics
 
-* **Theory:** visual explanation of "Memory as Context" (MAC).
-* **Code:** Builds the `NeuralMemory` class—a simple Multi-Layer Perceptron (MLP).
-* **Key Concept:** Implements the `memorize()` function which calculates the **Surprise** (MSE Loss) and updates weights via gradient descent *inside the inference loop*.
+### `Titans_MIRAS_Hybrid.ipynb` — Hybrid Approach 🔗
 
-### `03_Hybrid_Engine.ipynb`
+A beginner-friendly tutorial that augments a frozen LLM with learnable memory:
 
-* **Integration:** Loads a frozen **Mistral-7B** (or a smaller proxy like GPT-2 for speed).
-* **The Loop:** 1.  **Read:** Mistral processes text.
-2.  **Surprise:** Memory module calculates error signal from Mistral's hidden states.
-3.  **Learn:** Memory module updates its own weights instantly.
-4.  **Recall:** Memory module injects "soft prompts" into Mistral for the next sentence.
+1. **Environment Check**: Verifies Python, PyTorch, and GPU availability
+2. **Neural Memory Module**: Builds a trainable memory with `memorize()` and `recall()`
+3. **Hybrid Engine**: Connects memory to GPT-2's hidden states
+4. **Semantic Memory**: Uses sentence-transformers for fact retrieval with confidence scoring
+5. **Total Recall Experiment**: Proves memory works by clearing context and querying facts
+6. **Multi-User Demo**: Shows how one LLM can serve multiple users with private memories
 
-### `04_Demo_Chat_App.ipynb`
-
-* A fully interactive chat interface.
-* **The Test:** Feed the model 3 distinct facts, clear the standard context window, and watch the "Neural Memory" retrieve the facts based purely on its updated weights.
+**Key Concepts Covered:**
+- Test-Time Training (TTT)
+- Surprise-driven learning (MSE loss)
+- Semantic similarity and embeddings
+- Production-ready confidence scoring (gap + threshold)
 
 ---
 
 ## 🚀 Getting Started
 
-1. **Clone the Repo:**
+### Option 1: Conda Environment (Recommended for GPU)
+
+For the best experience with GPU acceleration, create a dedicated conda environment:
+
 ```bash
+# Create environment with RAPIDS, CUDA 13.0, and core packages
+conda create -n rapids-25.12 -c rapidsai -c conda-forge -c nvidia \
+    rapids=25.12 python=3.12 'cuda-version=13.0' \
+    jupyterlab -y
+
+# Install PyTorch with CUDA 13.0 support
+conda run -n rapids-25.12 pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu130
+
+# Install AI/ML packages
+conda run -n rapids-25.12 pip install accelerate transformers sentence-transformers matplotlib seaborn requests tqdm scikit-learn bitsandbytes
+```
+
+> **Note**: After creating the environment, select it as the Jupyter kernel:
+> - Click the kernel selector in the top right of VS Code/JupyterLab
+> - Choose "rapids-25.12" from the list
+
+### Option 2: Pip Install (Simpler)
+
+```bash
+# Clone the repo
 git clone https://github.com/your-username/titans-miras-hybrid.git
 cd titans-miras-hybrid
 
-```
-
-
-2. **Install Requirements:**
-```bash
+# Install requirements
 pip install -r requirements.txt
-
 ```
 
+### Running the Notebooks
 
-3. **Run the Notebooks:**
-Start with `01_Environment_Setup.ipynb` and follow the numbered order.
+1. **For understanding the full architecture**: Start with `Titans_MIRAS_Scratch.ipynb`
+2. **For quick prototyping**: Start with `Titans_MIRAS_Hybrid.ipynb`
+
+---
+
+## ⚠️ Hardware Disclaimer
+
+These notebooks were developed and tested exclusively on **NVIDIA DGX Spark** hardware:
+
+| Component | Specification |
+|-----------|---------------|
+| **CPU** | ARM64 (Grace CPU) |
+| **GPU** | NVIDIA GB10 (Blackwell Architecture) |
+| **Memory** | 128 GB Unified Shared Memory |
+| **CUDA** | 13.0 |
+| **OS** | Ubuntu 24.04 |
+
+> **Note**: The GB10 GPU uses CUDA Compute Capability 12.1, which may require PyTorch 2.5+ for full compatibility. Some warnings about CUDA capability may appear but can be safely ignored.
+
+Performance and compatibility on other hardware configurations (consumer GPUs, cloud instances, etc.) have not been verified.
 
 ---
 
@@ -94,11 +139,8 @@ Start with `01_Environment_Setup.ipynb` and follow the numbered order.
 
 * **Original Paper:** [Titans: Learning to Memorize at Test Time](https://arxiv.org/abs/2501.00663)
 * **Google Research Blog:** [Titans + MIRAS: Helping AI have long-term memory](https://research.google/blog/titans-miras-helping-ai-have-long-term-memory/)
+* **Video Explanation:** [Titans + MIRAS: Helping AI have long-term memory](https://www.youtube.com/watch?v=_WFgtK6K01g)
 
 ---
 
 *Disclaimer: This is an educational implementation inspired by the Titans paper. It is not the official Google implementation.*
-
-[Titans + MIRAS: Helping AI have long-term memory](https://www.youtube.com/watch?v=_WFgtK6K01g)
-
-This video from Google Research provides the official visual breakdown of how the Surprise Metric and Momentum work, which is essential for understanding the `memorize()` function in our notebooks.
