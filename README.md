@@ -1,86 +1,147 @@
-# Titans+MIRAS Hybrid Memory on DGX Spark
+# Titans+MIRAS: AI Long-Term Memory Implementation
 
-A practical, educational repository demonstrating how to implement **Test-Time Memorization** by augmenting existing LLMs with a "Titans" style neural memory module.
+[![Open In Colab - Scratch](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/seongyongkim/titan-miras-notebook/blob/main/Titans_MIRAS_Scratch.ipynb)
+[![Open In Colab - Hybrid](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/seongyongkim/titan-miras-notebook/blob/main/Titans_MIRAS_Hybrid.ipynb)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
+[![PyTorch 2.0+](https://img.shields.io/badge/PyTorch-2.0+-ee4c2c.svg)](https://pytorch.org/)
+
+A practical, educational repository demonstrating how to implement **Test-Time Memorization** using the Titans architecture with MIRAS training strategy.
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Educational-Project-brightgreen" alt="Educational Project">
+  <img src="https://img.shields.io/badge/Beginner-Friendly-orange" alt="Beginner Friendly">
+</p>
+
+---
+
+## 🚀 Quick Start
+
+### Run in Google Colab (No Installation Required!)
+
+| Notebook | Description | Open in Colab |
+|----------|-------------|---------------|
+| **From Scratch** | Build Titans architecture from the ground up | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/seongyongkim/titan-miras-notebook/blob/main/Titans_MIRAS_Scratch.ipynb) |
+| **Hybrid Approach** | Augment GPT-2 with memory module | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/seongyongkim/titan-miras-notebook/blob/main/Titans_MIRAS_Hybrid.ipynb) |
+
+### Run Locally
+
+```bash
+# Clone the repository
+git clone https://github.com/seongyongkim/titan-miras-notebook.git
+cd titan-miras-notebook
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Launch Jupyter
+jupyter notebook
+```
 
 ---
 
 ## 🧠 What are Titans and MIRAS?
 
-*(A Layman's Summary of the Google Research)*
+*A Beginner-Friendly Explanation*
 
 Current AI models (like ChatGPT) suffer from **Amnesia**. They have a fixed "context window" (short-term memory). Once you talk past that limit, the earliest parts of your conversation are cut off. To fix this, companies just make the window bigger, which makes the model **slower and more expensive** (quadratic cost).
 
 **Titans** and **MIRAS** are a new architecture and framework from Google Research that solve this by giving AI a **Long-Term Memory** that works like a human brain:
 
-* **Titans (The Tool):** Instead of a static window, the model has a separate "deep neural memory" (a small, second brain). It actively "learns" your conversation as it happens.
-* **MIRAS (The Blueprint):** A theoretical framework that treats memory as an optimization problem. It asks: *"What should I remember?"* and *"What should I forget?"*
+| Component | Description |
+|-----------|-------------|
+| **Titans** | A "deep neural memory" module that actively "learns" your conversation as it happens |
+| **MIRAS** | A framework that asks: *"What should I remember?"* and *"What should I forget?"* |
 
-### The Secret Sauce: The "Surprise Metric"
+### The Secret Sauce: The Surprise Metric
 
-Instead of remembering *everything* (which is wasteful), Titans uses a **Surprise Metric** to decide what is important.
+Instead of remembering *everything* (which is wasteful), Titans uses a **Surprise Metric** to decide what is important:
 
-* **Low Surprise:** "The cat sat on the..." (Predictable. **Ignore/Forget**.)
-* **High Surprise:** "The nuclear code is 8-X-9..." (Unexpected. **Memorize!**)
-
----
-
-## 🏗️ Implementation Approaches: Scratch vs. Hybrid
-
-This repository provides **two learning paths** for understanding Titans/MIRAS concepts:
-
-| Feature | **From Scratch** (`Titans_MIRAS_Scratch.ipynb`) | **Hybrid Approach** (`Titans_MIRAS_Hybrid.ipynb`) |
-| --- | --- | --- |
-| **Architecture** | Full Titans model built from scratch with integrated memory layers | Uses a frozen pre-trained LLM (GPT-2) with a "Memory Sidecar" attached |
-| **Training** | Trains the entire model on Shakespeare dataset with MIRAS curriculum | Only trains the tiny Memory Module during inference |
-| **Best For** | Understanding the complete Titans architecture | Quick prototyping and experimentation |
-| **Hardware** | Requires GPU for reasonable training time | Runs on CPU (slower) or GPU |
-| **Complexity** | Higher - builds attention + memory from scratch | Moderate - uses Hugging Face transformers |
+```
+Low Surprise:  "The cat sat on the..."     → Predictable    → FORGET
+High Surprise: "The nuclear code is 8-X-9" → Unexpected     → MEMORIZE!
+```
 
 ---
 
 ## 📂 Repository Structure
 
-### `Titans_MIRAS_Scratch.ipynb` — Build from Scratch 🔨
-
-A complete implementation that builds the Titans architecture from the ground up:
-
-1. **Hardware Setup**: Verifies GPU/CUDA environment
-2. **Data Pipeline**: Downloads and tokenizes the Tiny Shakespeare dataset
-3. **The Model**: Constructs `NeuralMemory`, `TitansBlock`, and `TitansGPT` classes
-4. **Training Loop**: Implements MIRAS-style curriculum learning with surprise weighting
-5. **Visualization**: Plots training loss and LTM gate usage over time
-6. **Interactive Chat**: Talk to your trained model!
-
-**Key Concepts Covered:**
-- Character-level tokenization
-- Causal attention with memory gating
-- Test-time training (TTT) simulation
-- Curriculum learning with surprise metrics
-
-### `Titans_MIRAS_Hybrid.ipynb` — Hybrid Approach 🔗
-
-A beginner-friendly tutorial that augments a frozen LLM with learnable memory:
-
-1. **Environment Check**: Verifies Python, PyTorch, and GPU availability
-2. **Neural Memory Module**: Builds a trainable memory with `memorize()` and `recall()`
-3. **Hybrid Engine**: Connects memory to GPT-2's hidden states
-4. **Semantic Memory**: Uses sentence-transformers for fact retrieval with confidence scoring
-5. **Total Recall Experiment**: Proves memory works by clearing context and querying facts
-6. **Multi-User Demo**: Shows how one LLM can serve multiple users with private memories
-
-**Key Concepts Covered:**
-- Test-Time Training (TTT)
-- Surprise-driven learning (MSE loss)
-- Semantic similarity and embeddings
-- Production-ready confidence scoring (gap + threshold)
+```
+titan-miras-notebook/
+├── 📓 Titans_MIRAS_Scratch.ipynb   # Full implementation from scratch
+├── 📓 Titans_MIRAS_Hybrid.ipynb    # GPT-2 + Memory sidecar approach
+├── 📋 requirements.txt              # Python dependencies
+├── 📖 README.md                     # This file
+├── 📜 LICENSE                       # MIT License
+├── 🤝 CONTRIBUTING.md               # Contribution guidelines
+└── 📁 artifacts/                    # Generated outputs (gitignored)
+```
 
 ---
 
-## 🚀 Getting Started
+## 🏗️ Implementation Approaches
 
-### Option 1: Conda Environment (Recommended for GPU)
+This repository provides **two learning paths** for understanding Titans/MIRAS concepts:
 
-For the best experience with GPU acceleration, create a dedicated conda environment:
+| Feature | **From Scratch** | **Hybrid Approach** |
+|---------|-----------------|---------------------|
+| **File** | `Titans_MIRAS_Scratch.ipynb` | `Titans_MIRAS_Hybrid.ipynb` |
+| **Architecture** | Full Titans model with integrated memory | Frozen GPT-2 + Memory Sidecar |
+| **Training** | Complete model on Shakespeare | Only memory module at inference |
+| **Best For** | Deep understanding | Quick prototyping |
+| **GPU Required** | Yes (for training) | Optional |
+| **Complexity** | Higher | Moderate |
+
+### `Titans_MIRAS_Scratch.ipynb` — Build from Scratch 🔨
+
+A comprehensive, beginner-friendly notebook that builds the Titans architecture step-by-step:
+
+1. **Environment Setup** — GPU detection, library imports
+2. **Data Pipeline** — Download and tokenize Tiny Shakespeare
+3. **Model Architecture** — Build `NeuralMemory`, `TitansBlock`, `TitansGPT`
+4. **MIRAS Training** — Curriculum learning with surprise weighting
+5. **Analysis** — Visualize training and learned patterns
+6. **Generation** — Interactive text generation
+
+**Key Features:**
+- 15+ educational visualizations
+- Step-by-step explanations with analogies
+- Beginner-friendly code comments
+
+### `Titans_MIRAS_Hybrid.ipynb` — Hybrid Approach 🔗
+
+A practical tutorial that augments a pre-trained LLM with learnable memory:
+
+1. **Neural Memory Module** — Build trainable memory with `memorize()` and `recall()`
+2. **Hybrid Engine** — Connect memory to GPT-2's hidden states
+3. **Semantic Memory** — Use embeddings for fact retrieval
+4. **Total Recall Experiment** — Prove memory works across context boundaries
+5. **Multi-User Demo** — One LLM serving multiple users with private memories
+
+---
+
+## 🛠️ Installation
+
+### Option 1: Google Colab (Recommended for Beginners)
+
+Just click the Colab badges above! The notebooks include setup cells that install all dependencies automatically.
+
+### Option 2: Local Installation
+
+**Requirements:**
+- Python 3.10+
+- CUDA-capable GPU (recommended for Scratch notebook)
+
+```bash
+# Create virtual environment (optional but recommended)
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+# Install dependencies
+pip install -r requirements.txt
+```
+
+### Option 3: Conda Environment (For GPU Users)
 
 ```bash
 # Create environment with RAPIDS, CUDA 13.0, and core packages
@@ -99,48 +160,57 @@ conda run -n rapids-25.12 pip install accelerate transformers sentence-transform
 > - Click the kernel selector in the top right of VS Code/JupyterLab
 > - Choose "rapids-25.12" from the list
 
-### Option 2: Pip Install (Simpler)
-
-```bash
-# Clone the repo
-git clone https://github.com/your-username/titans-miras-hybrid.git
-cd titans-miras-hybrid
-
-# Install requirements
-pip install -r requirements.txt
-```
-
-### Running the Notebooks
-
-1. **For understanding the full architecture**: Start with `Titans_MIRAS_Scratch.ipynb`
-2. **For quick prototyping**: Start with `Titans_MIRAS_Hybrid.ipynb`
-
 ---
 
-## ⚠️ Hardware Disclaimer
+## ⚠️ Hardware Notes
 
-These notebooks were developed and tested exclusively on **NVIDIA DGX Spark** hardware:
+These notebooks were developed on **NVIDIA DGX Spark** but are designed to run on various hardware:
 
-| Component | Specification |
-|-----------|---------------|
-| **CPU** | ARM64 (Grace CPU) |
-| **GPU** | NVIDIA GB10 (Blackwell Architecture) |
-| **Memory** | 128 GB Unified Shared Memory |
-| **CUDA** | 13.0 |
-| **OS** | Ubuntu 24.04 |
+| Environment | Scratch Notebook | Hybrid Notebook |
+|-------------|-----------------|-----------------|
+| **Google Colab (Free)** | ✅ Works (T4 GPU) | ✅ Works |
+| **Google Colab Pro** | ✅ Recommended | ✅ Works |
+| **Local GPU (8GB+)** | ✅ Works | ✅ Works |
+| **CPU Only** | ⚠️ Slow (~30 min) | ✅ Works |
 
-> **Note**: The GB10 GPU uses CUDA Compute Capability 12.1, which may require PyTorch 2.5+ for full compatibility. Some warnings about CUDA capability may appear but can be safely ignored.
-
-Performance and compatibility on other hardware configurations (consumer GPUs, cloud instances, etc.) have not been verified.
+> **Tip**: For the best experience with the Scratch notebook, use a GPU with at least 8GB VRAM.
 
 ---
 
 ## 📚 References
 
-* **Original Paper:** [Titans: Learning to Memorize at Test Time](https://arxiv.org/abs/2501.00663)
-* **Google Research Blog:** [Titans + MIRAS: Helping AI have long-term memory](https://research.google/blog/titans-miras-helping-ai-have-long-term-memory/)
-* **Video Explanation:** [Titans + MIRAS: Helping AI have long-term memory](https://www.youtube.com/watch?v=_WFgtK6K01g)
+| Resource | Link |
+|----------|------|
+| **Original Paper** | [Titans: Learning to Memorize at Test Time](https://arxiv.org/abs/2501.00663) |
+| **Google Research Blog** | [Titans + MIRAS: Helping AI have long-term memory](https://research.google/blog/titans-miras-helping-ai-have-long-term-memory/) |
+| **Video Explanation** | [YouTube: Titans + MIRAS Explained](https://www.youtube.com/watch?v=_WFgtK6K01g) |
 
 ---
 
-*Disclaimer: This is an educational implementation inspired by the Titans paper. It is not the official Google implementation.*
+## 🤝 Contributing
+
+Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+
+---
+
+## 📜 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+## 🙏 Acknowledgments
+
+- Google Research for the Titans and MIRAS papers
+- The PyTorch team for the deep learning framework
+- Andrej Karpathy for educational GPT implementations
+
+---
+
+<p align="center">
+  <i>⭐ Star this repo if you find it helpful!</i>
+</p>
+
+<p align="center">
+  <sub>Disclaimer: This is an educational implementation inspired by the Titans paper. It is not the official Google implementation.</sub>
+</p>
