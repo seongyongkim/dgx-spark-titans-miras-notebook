@@ -1,4 +1,4 @@
-# titanss+MIRAS: AI Long-Term Memory Implementation
+# Titans+MIRAS: AI Long-Term Memory Implementation
 
 [![Open In Colab - Scratch](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/seongyongkim/dgx-spark-titans-miras-notebook/blob/main/Titans_MIRAS_Scratch.ipynb)
 [![Open In Colab - Hybrid](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/seongyongkim/dgx-spark-titans-miras-notebook/blob/main/Titans_MIRAS_Hybrid.ipynb)
